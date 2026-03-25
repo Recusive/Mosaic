@@ -14,7 +14,7 @@
   <a href="#quick-start">Quick Start</a> &middot;
   <a href="#write-a-test">Write a Test</a> &middot;
   <a href="#how-it-works">How It Works</a> &middot;
-  <a href="https://github.com/Recursive/Mosaic-CLI/issues">Issues</a>
+  <a href="https://github.com/Recusive/Mosaic-CLI/issues">Issues</a>
 </p>
 
 ---
@@ -222,7 +222,7 @@ Full design spec: [spec-full.md](docs/spec/spec-full.md)
 Mosaic is open source. Contributions are welcome.
 
 ```bash
-git clone https://github.com/Recursive/Mosaic-CLI.git
+git clone https://github.com/Recusive/Mosaic-CLI.git
 cd Mosaic-CLI
 ```
 
@@ -230,9 +230,9 @@ See the [design specs](docs/spec/) to understand the architecture before diving 
 
 ## Community
 
-- [GitHub Issues](https://github.com/Recursive/Mosaic-CLI/issues) — bugs and feature requests
+- [GitHub Issues](https://github.com/Recusive/Mosaic-CLI/issues) — bugs and feature requests
 - [mosaic.sh](https://mosaic.sh) — updates and docs
 
 ## License
 
-MIT &copy; [Recursive Labs](https://recursive.sh)
+MIT &copy; [Recursive Labs](https://recursive.ac)
