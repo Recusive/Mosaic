@@ -1,22 +1,64 @@
-# Mosaic
+<p align="center">
+  <img src="https://mosaic.sh/logo.svg" width="120" alt="Mosaic" />
+</p>
 
-**by Recursive Labs**
+<h1 align="center">Mosaic</h1>
 
-Mosaic closes the agentic loop. One CLI command, and the agent knows if its work actually works.
+<p align="center">
+  <strong>The testing framework built for AI agents.</strong><br/>
+  One command. Real app. Real state. The agent knows if it works.
+</p>
+
+<p align="center">
+  <a href="https://mosaic.sh">Website</a> &middot;
+  <a href="#quick-start">Quick Start</a> &middot;
+  <a href="#how-it-works">How It Works</a> &middot;
+  <a href="https://github.com/Recusive/Mosaic/issues">Issues</a>
+</p>
 
 ---
 
-## The Problem
+## Why Mosaic?
 
-Every AI agent today ships blind. It writes code, says "done," and has no way to verify what it built inside the running application.
-
-## The Fix
+Every AI agent today ships blind.
 
 ```
-mosaic test <name>
+1. User gives a prompt
+2. Agent writes code
+3. Agent says "done"
 ```
 
-Runs test scripts inside the live app. Real state. Real stores. Real backend. Zero mocks. Structured results back to the agent. Pass or iterate.
+There is no step 4. No verification. No *"let me check if that actually works."*
+
+Unit tests mock everything. E2E tests click the DOM from outside. Neither gives the agent what it needs — the ability to verify its own work **inside the running application**.
+
+Mosaic closes the loop.
+
+## Quick Start
+
+```bash
+# Install
+curl -fsSL https://mosaic.sh/install | sh
+
+# Run a test
+mosaic test sidebar-width
+```
+
+```
+Phase 1 — Layout:
+  Step 1: Set viewport to 1200px → check sidebar visible          ✓  1.2s
+  Step 2: Set viewport to 800px  → check sidebar collapsed        ✓  0.8s
+  Step 3: Set viewport to 600px  → check sidebar hidden           ✓  0.9s
+
+Result: 3/3 passed
+Duration: 2.9s
+```
+
+The agent reads the output. All green? Done. Something failed? Fix and rerun.
+
+## How It Works
+
+Mosaic tests run **inside** your application — not from outside.
 
 ```
 User prompt → Agent builds → mosaic test → Pass? → Done.
@@ -24,40 +66,62 @@ User prompt → Agent builds → mosaic test → Pass? → Done.
                    └──── Fail: keep going ────┘
 ```
 
-## How It Works
+A test script gets direct access to:
 
-Mosaic tests don't run outside the application — they run **inside** it.
+| What | Examples |
+|------|----------|
+| **State management** | Zustand, Redux, MobX, custom stores |
+| **Internal functions** | `handleSend()`, `processQueue()`, any export |
+| **File system** | Read, write, verify file contents |
+| **DOM** | When you need it — but you're not limited to it |
 
-A Mosaic test script has direct access to:
+Playwright clicks a button and checks if the DOM changed. **Mosaic calls the function behind the button**, verifies the store updated, confirms the file system reflects the change, *and* checks the DOM. Same runtime. Same process. Same state.
 
-- **Application stores** — Zustand, Redux, MobX, custom state management
-- **Application functions** — internal APIs, handlers, mutations
-- **File system** — read files, verify content, check existence
-- **DOM** — when needed, but not limited to DOM assertions
+## Agent Compatible
 
-The agent writes a test. Mosaic runs it inside the app. Results come back structured and machine-readable. The agent reads them and decides: pass, or try again.
+Mosaic doesn't care which agent runs it. If it can execute a CLI command and read stdout, it works.
 
-## Who Uses It
+| Agent | Integration |
+|-------|-------------|
+| **Claude Code** | Bash tool / MCP |
+| **Codex** | Shell execution |
+| **Gemini CLI** | Shell execution |
+| **Orbit** | Native integration |
 
-AI agents — Claude Code, Codex, Gemini CLI, Orbit. Humans can use it. Agents should.
+Output is structured, machine-readable, and streamable. No interactive prompts. No TUI. Built for the agent.
+
+## Platforms
+
+| Platform | Status |
+|----------|--------|
+| Desktop apps | Proven internally |
+| Web / Browser | Planned |
+| Backend | Planned |
 
 ## What Mosaic Is Not
 
-- **Not a mock tester** — real state, real app, real backend
-- **Not an external driver** — runs inside the app, not from outside
-- **Not a test generator** — the agent writes the test, Mosaic runs it
-- **Not framework-locked** — desktop, web, backend (planned)
+| | |
+|-|-|
+| **Not a mock tester** | Real state. Real app. If it passes in Mosaic, it works in prod. |
+| **Not an E2E driver** | Runs inside the app — not a robot clicking from outside. |
+| **Not a test generator** | The agent writes the test. Mosaic runs it. |
+| **Not framework-locked** | Desktop, web, backend. The injection strategy adapts. |
+| **Not replacing unit tests** | Different jobs. They coexist. |
 
-## Status
+## Contributing
 
-Pre-development. Closed source.
+Mosaic is open source and contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-## Links
+```bash
+git clone https://github.com/Recusive/Mosaic.git
+cd Mosaic
+```
 
-- **Website:** [mosaic.sh](https://mosaic.sh)
-- **Parent company:** [Recursive Labs](https://recursive.sh)
-- **Orbit:** [orbit.build](https://orbit.build)
+## Community
 
----
+- [GitHub Issues](https://github.com/Recusive/Mosaic/issues) — bugs and feature requests
+- [mosaic.sh](https://mosaic.sh) — waitlist and updates
 
-&copy; Recursive Labs Inc.
+## License
+
+MIT &copy; [Recursive Labs](https://recursive.sh)
