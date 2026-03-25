@@ -5,7 +5,7 @@
 <h1 align="center">Mosaic</h1>
 
 <p align="center">
-  <strong>The testing framework built for AI agents.</strong><br/>
+  <strong>The testing CLI built for AI agents.</strong><br/>
   One command. Real app. Real state. The agent knows if it works.
 </p>
 
