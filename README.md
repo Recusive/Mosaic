@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.svg" width="120" alt="Mosaic" />
+  <img src="assets/logo.png" width="120" alt="Mosaic" />
 </p>
 
 <h1 align="center">Mosaic</h1>
