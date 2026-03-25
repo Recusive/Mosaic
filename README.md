@@ -223,7 +223,7 @@ Mosaic is open source. Contributions are welcome.
 
 ```bash
 git clone https://github.com/Recusive/Mosaic.git
-cd Mosaic-CLI
+cd Mosaic
 ```
 
 See the [design specs](docs/spec/) to understand the architecture before diving in.
