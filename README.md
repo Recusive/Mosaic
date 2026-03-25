@@ -10,6 +10,14 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/Recusive/Mosaic/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License" /></a>
+  <a href="https://github.com/Recusive/Mosaic/stargazers"><img src="https://img.shields.io/github/stars/Recusive/Mosaic?style=social" alt="GitHub Stars" /></a>
+  <a href="https://mosaic.sh"><img src="https://img.shields.io/badge/website-mosaic.sh-black" alt="Website" /></a>
+  <a href="https://github.com/Recusive/Mosaic"><img src="https://img.shields.io/badge/status-pre--development-orange" alt="Status: Pre-development" /></a>
+  <a href="https://www.rust-lang.org"><img src="https://img.shields.io/badge/built%20with-Rust-dea584" alt="Built with Rust" /></a>
+</p>
+
+<p align="center">
   <a href="https://mosaic.sh">Website</a> &middot;
   <a href="#quick-start">Quick Start</a> &middot;
   <a href="#write-a-test">Write a Test</a> &middot;
