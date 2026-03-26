@@ -137,14 +137,15 @@ Different platforms expose different debug protocols. Mosaic adapts transparentl
 
 | Platform | Engine | Protocol | Port (default) |
 |----------|--------|----------|----------------|
-| Tauri (macOS) | WebKit (WKWebView) | WebKit Inspector Protocol | 9222 |
-| Tauri (Linux) | WebKitGTK | WebKit Inspector Protocol | 9222 |
-| Tauri (Windows) | WebView2 (Chromium) | Chrome DevTools Protocol | 9222 |
+| **Tauri (all platforms)** | WKWebView / WebKitGTK / WebView2 | **Tauri Plugin** (PRIMARY) | ephemeral |
+| Tauri (Linux fallback) | WebKitGTK | WebKit Inspector Protocol | 9222 |
+| Tauri (Windows fallback) | WebView2 (Chromium) | Chrome DevTools Protocol | 9222 |
 | Electron | Chromium | Chrome DevTools Protocol | 9222 |
 | Chrome / Edge | Chromium | Chrome DevTools Protocol | 9222 |
-| Safari | WebKit | WebKit Inspector Protocol | 9222 |
 | Node.js | V8 | Node Inspector Protocol | 9229 |
 | CLI/TUI tools | N/A | Process (stdin/stdout/stderr) | N/A |
+
+> **Note:** macOS WKWebView has no public remote debugging API. `WEBKIT_INSPECTOR_SERVER` only works on Linux (WebKitGTK). The Tauri Plugin adapter uses Tauri's native `Webview::eval()` which calls Apple's public `WKWebView.evaluateJavaScript()` API, working on all platforms.
 
 ### Common Capabilities (all adapters)
 
@@ -154,11 +155,15 @@ Every adapter supports:
 - **`on_console(cb)`** — capture console output (structured events from the runtime)
 - **`close()`** — clean disconnect
 
+### Tauri Plugin Adapter (PRIMARY for Tauri)
+
+For Tauri apps on all platforms (macOS, Linux, Windows). Uses `tauri-plugin-mosaic` — a lightweight Tauri Rust plugin that exposes `Webview::eval()` and event capture via a secured local WebSocket. Works with any frontend bundler. Feature-gated to compile out of production builds. See Plan 07b for full details.
+
 ### WebKit Inspector Adapter
 
-For Tauri on macOS and Linux. Connects via WebSocket to the WebKit Inspector Protocol.
+For non-Tauri WebKitGTK targets on Linux only. **Does NOT work on macOS** (WKWebView has no public remote debugging API).
 
-**Activation:** The target app must be launched with the `WEBKIT_INSPECTOR_SERVER` environment variable:
+**Activation:** The target app must be launched with the `WEBKIT_INSPECTOR_HTTP_SERVER` environment variable (note: use the HTTP variant, not `WEBKIT_INSPECTOR_SERVER`):
 
 ```
 WEBKIT_INSPECTOR_SERVER=127.0.0.1:9222 cargo tauri dev

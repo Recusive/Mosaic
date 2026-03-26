@@ -146,8 +146,9 @@ Two layers:
 │  CLI → Auto-Detect → Protocol Adapter → Output  │
 │                                                 │
 │  Adapters:                                      │
-│    WebKit Inspector (Tauri macOS, Safari)        │
-│    CDP (Electron, Chrome, Tauri Windows)         │
+│    Tauri Plugin (Tauri macOS/Linux/Windows)      │
+│    CDP (Electron, Chrome, Tauri fallback)        │
+│    WebKit Inspector (Linux WebKitGTK)            │
 │    Node Inspector (Node.js backends)             │
 │    Process (CLI/TUI tools)                       │
 └─────────────────────────────────────────────────┘

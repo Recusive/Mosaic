@@ -72,35 +72,47 @@ Mosaic identifies a Tauri project by the presence of `tauri.conf.json` (Tauri v1
 
 For Tauri v2, the config may be `tauri.conf.json` or `Tauri.toml`. Mosaic checks both.
 
-### WebKit Inspector Connection (macOS/Linux)
+### Tauri Plugin Connection (macOS/Linux/Windows — PRIMARY)
 
-Tauri on macOS and Linux uses WKWebView (WebKit). To enable remote debugging:
+**`WEBKIT_INSPECTOR_SERVER` does NOT work on macOS.** Apple's WKWebView has no public remote debugging API. Instead, Mosaic uses `tauri-plugin-mosaic` — a lightweight Tauri plugin that provides JavaScript evaluation via Tauri's native `Webview::eval()` API (which calls `WKWebView.evaluateJavaScript()` on macOS — a public, stable Apple API).
+
+This is the **primary adapter for all Tauri testing** on all platforms.
+
+**Setup (one-time):**
+
+```toml
+# src-tauri/Cargo.toml
+[dependencies]
+tauri-plugin-mosaic = { version = "0.1", optional = true }
+[features]
+mosaic = ["dep:tauri-plugin-mosaic"]
+```
+
+```rust
+// src-tauri/lib.rs — add one line
+.plugin(tauri_plugin_mosaic::init())
+```
+
+**How it works:**
+
+1. App starts with `cargo tauri dev --features mosaic`
+2. Plugin starts a secured WebSocket server on 127.0.0.1 (ephemeral port, UUID token)
+3. Plugin announces port+token via stdout: `__MOSAIC_PLUGIN__:{"port":14201,"token":"uuid"}`
+4. Mosaic CLI connects to the WebSocket
+5. Mosaic sends JS to evaluate → plugin calls `webview.eval(js)`
+6. Runtime events flow back via Tauri IPC → plugin → WebSocket → Mosaic CLI
+
+**Security:** UUID token in WebSocket path, origin validation, single-client mode, 127.0.0.1 only.
+
+### WebKit Inspector Connection (Linux only — FALLBACK)
+
+For non-Tauri WebKitGTK targets on Linux. Uses `WEBKIT_INSPECTOR_HTTP_SERVER` (not `WEBKIT_INSPECTOR_SERVER`):
 
 ```
-WEBKIT_INSPECTOR_SERVER=127.0.0.1:9222 cargo tauri dev
+WEBKIT_INSPECTOR_HTTP_SERVER=127.0.0.1:9222 cargo tauri dev
 ```
 
-This opens a WebSocket server at `ws://127.0.0.1:9222` that speaks the WebKit Inspector Protocol.
-
-**Connection sequence:**
-
-1. HTTP GET `http://127.0.0.1:9222/json` — lists inspectable targets
-2. Each target has a `webSocketDebuggerUrl`
-3. Mosaic connects to the WebSocket for the main page target
-4. Sends `Runtime.enable` to start receiving console events
-5. Ready to evaluate JavaScript and capture output
-
-**Key protocol messages used:**
-
-```
-→ {"id":1,"method":"Runtime.enable"}
-← {"id":1,"result":{}}
-
-→ {"id":2,"method":"Runtime.evaluate","params":{"expression":"..."}}
-← {"id":2,"result":{"result":{"type":"string","value":"..."}}}
-
-← {"method":"Console.messageAdded","params":{"message":{"text":"...","level":"warning"}}}
-```
+**Note:** This does NOT work on macOS. Use the Tauri Plugin adapter on macOS.
 
 ### CDP Connection (Windows)
 

@@ -41,10 +41,13 @@ Each adapter implements a common Rust trait (`connect`, `evaluate`, `on_console`
 
 | Adapter | Target | Protocol |
 |---------|--------|----------|
-| WebKit Inspector | Tauri macOS/Linux, Safari | WebKit Inspector Protocol |
-| CDP | Electron, Chrome, Tauri Windows | Chrome DevTools Protocol |
+| **Tauri Plugin** | **Tauri (macOS/Linux/Windows)** | **tauri-plugin-mosaic (PRIMARY for Tauri)** |
+| WebKit Inspector | Linux WebKitGTK (non-Tauri) | WebKit Inspector Protocol |
+| CDP | Electron, Chrome | Chrome DevTools Protocol |
 | Node Inspector | Node.js backends | V8 Inspector Protocol |
 | Process | CLI/TUI tools | stdin/stdout/stderr pipes |
+
+**macOS note:** `WEBKIT_INSPECTOR_SERVER` does NOT work on macOS WKWebView. The Tauri Plugin adapter uses Tauri's native `Webview::eval()` (which calls Apple's public `WKWebView.evaluateJavaScript()` API) and works on all platforms. One-time setup: `mosaic init --plugin`.
 
 ### Platform Priority
 
